@@ -117,9 +117,9 @@ def run_dns_server():
             # Wait for incoming DNS requests
             data, addr = server_socket.recvfrom(1024)
             # Parse the request using the `dns.message.from_wire` method
-            request = dns.message.from_wire(53,dns_records) ##### MIGHT BE WRONG COME BACK
+            request = dns.message.from_wire(data) ##### MIGHT BE WRONG COME BACK
             # Create a response message using the `dns.message.make_response` method
-            response = dns.message.make_response(data)
+            response = dns.message.make_response(request)
 
             # Get the question from the request
             question = request.question[0]
@@ -156,7 +156,7 @@ def run_dns_server():
 
             # Send the response back to the client using the `server_socket.sendto` method and put the response to_wire(), return to the addr you received from
             print("Responding to request:", qname)
-            server_socket.sendto(1024)
+            server_socket.sendto(str(rdata_list).encode('utf-8'), ("", 53))
         except KeyboardInterrupt: #may need to shift this over to the right
             print('\nExiting...')
             server_socket.close()
