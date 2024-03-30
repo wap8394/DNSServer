@@ -119,12 +119,13 @@ def run_dns_server():
             # Parse the request using the `dns.message.from_wire` method
             request = dns.message.from_wire(53) ##### MIGHT BE WRONG COME BACK
             # Create a response message using the `dns.message.make_response` method
-            response = dns.message.make_response(request)
+            response = dns.message.make_response(data)
 
             # Get the question from the request
             question = request.question[0]
             qname = question.name.to_text()
             qtype = question.rdtype
+            #print('Seemingly connected')
 
             # Check if there is a record in the `dns_records` dictionary that matches the question
             if qname in dns_records and qtype in dns_records[qname]:
