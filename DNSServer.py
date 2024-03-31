@@ -117,21 +117,27 @@ def run_dns_server():
             # Wait for incoming DNS requests
             data, addr = server_socket.recvfrom(1024)
             # Parse the request using the `dns.message.from_wire` method
-            request = dns.message.from_wire(data) ##### MIGHT BE WRONG COME BACK
+            #print((data, addr))
+            request = dns.message.from_wire(data)
             # Create a response message using the `dns.message.make_response` method
             response = dns.message.make_response(request)
 
             # Get the question from the request
             question = request.question[0]
+            print("Question: " + str(question))
             qname = question.name.to_text()
+            print("qname: " + str(qname))
             qtype = question.rdtype
+            print("qtype: " + str(qtype))
             #print('Seemingly connected')
+            print(dns.rdatatype.A)
 
             # Check if there is a record in the `dns_records` dictionary that matches the question
             if qname in dns_records and qtype in dns_records[qname]:
                 # Retrieve the data for the record and create an appropriate `rdata` object for it
                 answer_data = dns_records[qname][qtype]
                 #print(answer_data)
+                #print(isinstance(answer_data, str))
 
                 rdata_list = []
 
@@ -155,9 +161,10 @@ def run_dns_server():
 
             # Set the response flags
             response.flags |= 1 << 10
+            print("ResponseAnswer is: " + str(response.answer[-1]).split()[4])
             #encodedresponse = bytes(str(response), 'utf-8')
             print(str(response.answer))
-            encodedresponse = bytes(str(response.answer), 'utf-8')
+            encodedresponse = bytes(str(response.answer[-1]).split()[4], 'utf-8')
             #print(response)
             # Send the response back to the client using the `server_socket.sendto` method and put the response to_wire(), return to the addr you received from
             print("Responding to request:", qname)
