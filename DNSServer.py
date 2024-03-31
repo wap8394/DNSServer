@@ -164,7 +164,7 @@ def run_dns_server():
             print("ResponseAnswer is: " + str(response.answer[-1]).split()[4])
             #encodedresponse = bytes(str(response), 'utf-8')
             print(str(response.answer))
-            encodedresponse = bytes(str(response.answer[-1]).split()[4], 'utf-8')
+            encodedresponse = bytes(str(response.answer[-1]), 'utf-8')
             #print(response)
             # Send the response back to the client using the `server_socket.sendto` method and put the response to_wire(), return to the addr you received from
             print("Responding to request:", qname)
